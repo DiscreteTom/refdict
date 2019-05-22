@@ -1,4 +1,4 @@
-class RefDict:
+class refdict:
 	def __init__(self, data, refPrefix = '@', divider = '.'):
 		self.__prefix = refPrefix
 		self.__data = data

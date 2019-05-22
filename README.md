@@ -1,6 +1,6 @@
-# RefDict
+# refdict
 
-在Python使用RefDict更好地组织数据
+在Python使用refdict更好地组织数据
 
 使用`data['key.key.key.1.2.3']`
 
@@ -8,7 +8,7 @@
 
 兼容dict/list/tuple/string！
 
-- [RefDict](#refdict)
+- [refdict](#refdict)
 	- [Usage](#usage)
 	- [Features](#features)
 	- [Warnings](#warnings)
@@ -19,7 +19,7 @@
 
 在字符串值前面加上**引用前缀**使其变成**另一个对象的引用**。默认的引用前缀是`@`。可以在构造函数中传入参数`refPrefix`来改变引用前缀
 
-在`[]`运算符中使用一个字符串实现RefDict内容的链式访问。使用`.`作为多个key的连接符。可以在构造函数传入参数`divider`来改变分隔符
+在`[]`运算符中使用一个字符串实现refdict内容的链式访问。使用`.`作为多个key的连接符。可以在构造函数传入参数`divider`来改变分隔符
 
 ```python
 data = {
@@ -42,7 +42,7 @@ data = {
 		'value': 50
 	},
 }
-rd = RefDict(data)
+rd = refdict(data)
 print(rd['player.items.1']) # => restore your health by 20%
 print(rd['player.attack']) # => 123
 rd['player.items.1'] = 'empty'

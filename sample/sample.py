@@ -1,4 +1,4 @@
-from refdict import RefDict
+from refdict import refdict
 
 if __name__ == '__main__':
 	data = {
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 			'value': 50
 		},
 	}
-	rd = RefDict(data)
+	rd = refdict(data)
 	print(rd['player.items.1']) # => restore your health by 20%
 	print(rd['player.attack']) # => 123
 	rd['player.items.1'] = 'empty'

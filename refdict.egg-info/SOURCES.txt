@@ -1,6 +1,6 @@
 README.md
 setup.py
-RefDict/__init__.py
+refdict/__init__.py
 refdict.egg-info/PKG-INFO
 refdict.egg-info/SOURCES.txt
 refdict.egg-info/dependency_links.txt

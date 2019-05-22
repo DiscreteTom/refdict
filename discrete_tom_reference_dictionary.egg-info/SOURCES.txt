@@ -1,7 +1,0 @@
-README.md
-setup.py
-RefDict/__init__.py
-discrete_tom_reference_dictionary.egg-info/PKG-INFO
-discrete_tom_reference_dictionary.egg-info/SOURCES.txt
-discrete_tom_reference_dictionary.egg-info/dependency_links.txt
-discrete_tom_reference_dictionary.egg-info/top_level.txt

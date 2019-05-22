@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: refdict
-Version: 1.0.0
+Version: 1.0.1
 Summary: add reference for dict in python using formatted string
 Home-page: https://github.com/DiscreteTom/RefDict
 Author: DiscreteTom
@@ -85,7 +85,7 @@ Description: # RefDict
         data = {
         	'item': '@item', # => infinite loop!
         	'wrapper': {
-        		'item': '@2nd-layer.item' # => infinite loop!
+        		'item': '@wrapper.item' # => infinite loop!
         	},
         	'a': '@b' # => infinite loop!
         	'b': '@a' # => infinite loop!

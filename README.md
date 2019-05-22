@@ -77,7 +77,7 @@ print(rd.text('player.me.attack')) # => @player.weapon.attack
 data = {
 	'item': '@item', # => infinite loop!
 	'wrapper': {
-		'item': '@2nd-layer.item' # => infinite loop!
+		'item': '@wrapper.item' # => infinite loop!
 	},
 	'a': '@b' # => infinite loop!
 	'b': '@a' # => infinite loop!

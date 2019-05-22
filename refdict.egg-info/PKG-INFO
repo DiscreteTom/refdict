@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: refdict
-Version: 1.0.0
+Version: 2.0.1
 Summary: add reference for dict in python using formatted string
 Home-page: https://github.com/DiscreteTom/refdict
 Author: DiscreteTom
@@ -21,6 +21,7 @@ Description: # refdict
         	- [Features](#features)
         	- [Warnings](#warnings)
         	- [Change Log](#change-log)
+        		- [v2.0.0](#v200)
         		- [v1.0.0](#v100)
         
         ## Usage
@@ -93,6 +94,10 @@ Description: # refdict
         ```
         
         ## Change Log
+        
+        ### v2.0.0
+        
+        改名。还是小写看起来舒服。但是不向前兼容了所以就用2.0.0的版本号好了
         
         ### v1.0.0
         

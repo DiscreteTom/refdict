@@ -13,6 +13,7 @@
 	- [Features](#features)
 	- [Warnings](#warnings)
 	- [Change Log](#change-log)
+		- [v2.0.0](#v200)
 		- [v1.0.0](#v100)
 
 ## Usage
@@ -85,6 +86,10 @@ data = {
 ```
 
 ## Change Log
+
+### v2.0.0
+
+改名。还是小写看起来舒服。但是不向前兼容了所以就用2.0.0的版本号好了
 
 ### v1.0.0
 

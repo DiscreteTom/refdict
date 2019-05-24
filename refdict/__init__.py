@@ -1,16 +1,16 @@
 class refdict:
 	def __init__(self, data, refPrefix = '@', divider = '.'):
 		self.__prefix = refPrefix
-		self.__data = data
+		self.data = data
 		self.__divider = divider
 
 	def load(self, data):
-		self.__data = data
+		self.data = data
 		return self
 
 	def __getitem__(self, keys: str):
 		# default result is the whole dict
-		result = self.__data
+		result = self.data
 		keys = keys.split(self.__divider)
 		while len(keys):
 			# every time pop the first key
@@ -28,15 +28,15 @@ class refdict:
 				# because target can have many parts divided by self.__divider
 				keys = result[len(self.__prefix):].split(self.__divider) + keys
 				# result is the top-level object again
-				result = self.__data
+				result = self.data
 		return result
 
 	def __setitem__(self, keys: str, value):
 		result = None
 		keys = keys.split(self.__divider)
-		# idea: self.__data[keys[:-1]][keys[-1]] = value, based on self.__getitem__
+		# idea: self.data[keys[:-1]][keys[-1]] = value, based on self.__getitem__
 		if len(keys) == 1:
-			result = self.__data
+			result = self.data
 		else:
 			result = self[self.__divider.join(keys[:-1])]
 		# if result is a reference string, redirect it to its target
@@ -51,9 +51,9 @@ class refdict:
 		get value, if the value the last key is a ref string, return the ref string
 		'''
 		keys = keys.split(self.__divider)
-		# idea: return self.__data[keys[:-1]][key[-1]], based on self.__getitem__
+		# idea: return self.data[keys[:-1]][key[-1]], based on self.__getitem__
 		if len(keys) == 1:
-			result = self.__data
+			result = self.data
 		else:
 			result = self[self.__divider.join(keys[:-1])]
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
@@ -63,4 +63,10 @@ class refdict:
 			# see result as a dict, use key as a string
 			result = result[keys[-1]]
 		return result
+
+	def __getattr__(self, funcName):
+		return eval('self.data.' + funcName, locals())
+
+	def __str__(self):
+		return str(self.data)
 

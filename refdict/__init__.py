@@ -34,7 +34,7 @@ class refdict:
 	def __setitem__(self, keys: str, value):
 		result = None
 		keys = keys.split(self.__divider)
-		# idea: self.__data[keys[:-1]][keys[-1]] = value
+		# idea: self.__data[keys[:-1]][keys[-1]] = value, based on self.__getitem__
 		if len(keys) == 1:
 			result = self.__data
 		else:
@@ -51,7 +51,7 @@ class refdict:
 		get value, if the value the last key is a ref string, return the ref string
 		'''
 		keys = keys.split(self.__divider)
-		# idea: return self.__data[keys[:-1]][key[-1]]
+		# idea: return self.__data[keys[:-1]][key[-1]], based on self.__getitem__
 		if len(keys) == 1:
 			result = self.__data
 		else:

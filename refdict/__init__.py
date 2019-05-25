@@ -95,3 +95,24 @@ class refdict:
 
 	def __contains__(self, key):
 		return key in self.data
+
+	def __delitem__(self, keys):
+		# if keys is an int or a slice (maybe self.data is a str or list or tuple)
+		if isinstance(keys, int) or isinstance(keys, slice):
+			del self.data[keys]
+		# or keys must be a str
+		elif not isinstance(keys, str):
+			raise TypeError('refdict.__delitem__ can just accept int, str or slice as keys')
+		keys = keys.split(self.__divider)
+		# idea: del self.data[keys[:-1]][keys[-1]], based on self.__getitem__
+		# first, let result = self.data[keys[:-1]]
+		result = self.data
+		if len(keys) > 1:
+			result = self[self.__divider.join(keys[:-1])]
+		# then, result = result[keys[-1]]
+		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
+			# use `eval` to support slice operation
+			exec('del result[' + keys[-1] + ']')
+		else:
+			# see result as a dict, use key as a string
+			del result[keys[-1]]

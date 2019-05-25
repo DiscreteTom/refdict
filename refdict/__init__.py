@@ -1,8 +1,8 @@
 class refdict:
-	def __init__(self, data, refPrefix = '@', divider = '.'):
+	def __init__(self, data, refPrefix = '@', separator = '.'):
 		self.__prefix = refPrefix
 		self.data = data
-		self.__divider = divider
+		self.__separator = separator
 
 	def load(self, data):
 		self.data = data
@@ -17,7 +17,7 @@ class refdict:
 			raise TypeError('refdict.__getitem__ can just accept str, int or slice as keys')
 		# default result is the whole dict
 		result = self.data
-		keys = keys.split(self.__divider)
+		keys = keys.split(self.__separator)
 		while len(keys):
 			# every time pop the first key
 			key = keys.pop(0)
@@ -31,8 +31,8 @@ class refdict:
 			# if result is a reference string, redirect it to its target
 			while isinstance(result, str) and result.startswith(self.__prefix):
 				# add target infront of keys
-				# because target can have many parts divided by self.__divider
-				keys = result[len(self.__prefix):].split(self.__divider) + keys
+				# because target can have many parts divided by self.__separator
+				keys = result[len(self.__prefix):].split(self.__separator) + keys
 				# result is the top-level object again
 				result = self.data
 		return result
@@ -47,13 +47,13 @@ class refdict:
 			raise TypeError('refdict.__setitem__ can just accept int, str or slice as keys')
 
 		result = None
-		keys = keys.split(self.__divider)
+		keys = keys.split(self.__separator)
 		# idea: self.data[keys[:-1]][keys[-1]] = value, based on self.__getitem__
 		# first, let result = self.data[keys[:-1]]
 		if len(keys) == 1:
 			result = self.data
 		else:
-			result = self[self.__divider.join(keys[:-1])]
+			result = self[self.__separator.join(keys[:-1])]
 		# then, result = result[keys[-1]]
 		# if result is a reference string, redirect it to its target
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
@@ -71,13 +71,13 @@ class refdict:
 			return self.data[keys]
 		elif not isinstance(keys, str):
 			raise TypeError('refdict.text can just accept int, str or slice as keys')
-		keys = keys.split(self.__divider)
+		keys = keys.split(self.__separator)
 		# idea: return self.data[keys[:-1]][key[-1]], based on self.__getitem__
 		# first, let result = self.data[keys[:-1]]
 		if len(keys) == 1:
 			result = self.data
 		else:
-			result = self[self.__divider.join(keys[:-1])]
+			result = self[self.__separator.join(keys[:-1])]
 		# then, result = result[keys[-1]]
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
 			# use `eval` to support slice operation
@@ -103,12 +103,12 @@ class refdict:
 		# or keys must be a str
 		elif not isinstance(keys, str):
 			raise TypeError('refdict.__delitem__ can just accept int, str or slice as keys')
-		keys = keys.split(self.__divider)
+		keys = keys.split(self.__separator)
 		# idea: del self.data[keys[:-1]][keys[-1]], based on self.__getitem__
 		# first, let result = self.data[keys[:-1]]
 		result = self.data
 		if len(keys) > 1:
-			result = self[self.__divider.join(keys[:-1])]
+			result = self[self.__separator.join(keys[:-1])]
 		# then, result = result[keys[-1]]
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
 			# use `eval` to support slice operation

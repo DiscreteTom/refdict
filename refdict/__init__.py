@@ -49,10 +49,12 @@ class refdict:
 		result = None
 		keys = keys.split(self.__divider)
 		# idea: self.data[keys[:-1]][keys[-1]] = value, based on self.__getitem__
+		# first, let result = self.data[keys[:-1]]
 		if len(keys) == 1:
 			result = self.data
 		else:
 			result = self[self.__divider.join(keys[:-1])]
+		# then, result = result[keys[-1]]
 		# if result is a reference string, redirect it to its target
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
 			# use `exec` to support slice assignment
@@ -71,10 +73,12 @@ class refdict:
 			raise TypeError('refdict.text can just accept int, str or slice as keys')
 		keys = keys.split(self.__divider)
 		# idea: return self.data[keys[:-1]][key[-1]], based on self.__getitem__
+		# first, let result = self.data[keys[:-1]]
 		if len(keys) == 1:
 			result = self.data
 		else:
 			result = self[self.__divider.join(keys[:-1])]
+		# then, result = result[keys[-1]]
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
 			# use `eval` to support slice operation
 			result = eval('result[' + keys[-1] + ']')

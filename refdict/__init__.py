@@ -9,6 +9,15 @@ class refdict:
 		return self
 
 	def __getitem__(self, keys: str):
+		# if self.data is a str or list or tuple and keys is an int
+		if isinstance(keys, int):
+			return self.data[keys]
+		# or, maybe keys is a slice
+		elif isinstance(keys, slice):
+			return self.data[keys.start : keys.stop : keys.step]
+		# else, keys must be a str
+		elif not isinstance(keys, str):
+			raise TypeError('refdict.__getitem__ can just accept str, int or slice() as keys')
 		# default result is the whole dict
 		result = self.data
 		keys = keys.split(self.__divider)
@@ -32,6 +41,17 @@ class refdict:
 		return result
 
 	def __setitem__(self, keys: str, value):
+		# if self.data is str or list or tuple and keys is not a str
+		if isinstance(keys, int):
+			self.data[keys] = value
+			return
+		elif isinstance(keys, slice):
+			self.data[keys.start : keys.stop : keys.step] = value
+			return
+		# else, keys must be str
+		elif not isinstance(keys, str):
+			raise TypeError('refdict.__setitem__ can just accept int, str or slice as keys')
+
 		result = None
 		keys = keys.split(self.__divider)
 		# idea: self.data[keys[:-1]][keys[-1]] = value, based on self.__getitem__

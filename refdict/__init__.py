@@ -8,13 +8,10 @@ class refdict:
 		self.data = data
 		return self
 
-	def __getitem__(self, keys: str):
-		# if self.data is a str or list or tuple and keys is an int
-		if isinstance(keys, int):
+	def __getitem__(self, keys):
+		# if keys is an int or a slice (self.data is a str or list or tuple)
+		if isinstance(keys, int) or isinstance(keys, slice):
 			return self.data[keys]
-		# or, maybe keys is a slice
-		elif isinstance(keys, slice):
-			return self.data[keys.start : keys.stop : keys.step]
 		# else, keys must be a str
 		elif not isinstance(keys, str):
 			raise TypeError('refdict.__getitem__ can just accept str, int or slice() as keys')
@@ -40,13 +37,10 @@ class refdict:
 				result = self.data
 		return result
 
-	def __setitem__(self, keys: str, value):
-		# if self.data is str or list or tuple and keys is not a str
-		if isinstance(keys, int):
+	def __setitem__(self, keys, value):
+		# if keys is a slice or an int (maybe self.data is str or list or tuple)
+		if isinstance(keys, int) or isinstance(keys, slice):
 			self.data[keys] = value
-			return
-		elif isinstance(keys, slice):
-			self.data[keys.start : keys.stop : keys.step] = value
 			return
 		# else, keys must be str
 		elif not isinstance(keys, str):

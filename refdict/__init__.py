@@ -14,7 +14,7 @@ class refdict:
 			return self.data[keys]
 		# else, keys must be a str
 		elif not isinstance(keys, str):
-			raise TypeError('refdict.__getitem__ can just accept str, int or slice() as keys')
+			raise TypeError('refdict.__getitem__ can just accept str, int or slice as keys')
 		# default result is the whole dict
 		result = self.data
 		keys = keys.split(self.__divider)

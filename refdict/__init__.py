@@ -70,3 +70,5 @@ class refdict:
 	def __str__(self):
 		return str(self.data)
 
+	def __contains__(self, key):
+		return key in self.data

@@ -116,3 +116,6 @@ class refdict:
 		else:
 			# see result as a dict, use key as a string
 			del result[keys[-1]]
+
+	def __repr__(self):
+	 return repr(self.data)

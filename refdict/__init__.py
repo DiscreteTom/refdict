@@ -117,5 +117,8 @@ class refdict:
 			# see result as a dict, use key as a string
 			del result[keys[-1]]
 
+	def __iter__(self):
+		return iter(self.data)
+
 	def __repr__(self):
-	 return repr(self.data)
+		return repr(self.data)

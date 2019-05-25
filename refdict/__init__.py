@@ -60,10 +60,15 @@ class refdict:
 		else:
 			result[keys[-1]] = value
 	
-	def text(self, keys: str):
+	def text(self, keys):
 		'''
 		get value, if the value the last key is a ref string, return the ref string
 		'''
+		# if keys is a slice or an int (maybe self.data is a str or list or tuple)
+		if isinstance(keys, int) or isinstance(keys, slice):
+			return self.data[keys]
+		elif not isinstance(keys, str):
+			raise TypeError('refdict.text can just accept int, str or slice as keys')
 		keys = keys.split(self.__divider)
 		# idea: return self.data[keys[:-1]][key[-1]], based on self.__getitem__
 		if len(keys) == 1:
@@ -79,7 +84,7 @@ class refdict:
 		return result
 
 	def __getattr__(self, funcName):
-		return eval('self.data.' + funcName, locals())
+		return eval('self.data.' + funcName)
 
 	def __str__(self):
 		return str(self.data)

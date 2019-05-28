@@ -5,7 +5,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name="refdict",
-    version="2.2.0",
+    version="2.2.1",
     author="DiscreteTom",
     author_email="discrete_tom@outlook.com",
     description="add reference for dict in python using formatted string",

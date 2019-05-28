@@ -93,8 +93,19 @@ class refdict:
 	def __str__(self):
 		return str(self.data)
 
-	def __contains__(self, key):
-		return key in self.data
+	def __contains__(self, keys):
+		if not isinstance(keys, str):
+			return keys in self.data
+		keys = keys.split(self.__separator)
+		if len(keys) == 1:
+			return keys in self.data
+		resultContainer = None
+		try:
+			resultContainer = self['.'.join(keys[:-1])]
+		except:
+			return False
+		return keys[-1] in resultContainer
+
 
 	def __delitem__(self, keys):
 		# if keys is an int or a slice (maybe self.data is a str or list or tuple)

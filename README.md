@@ -2,7 +2,7 @@
 
 在Python使用refdict更好地组织与访问数据
 
-![](img/readme.png)
+![](https://raw.githubusercontent.com/DiscreteTom/refdict/master/img/readme.png)
 
 兼容dict/list/tuple/str！
 
@@ -13,6 +13,7 @@
 	- [Warnings](#warnings)
 	- [FAQ](#faq)
 	- [Change Log](#change-log)
+		- [v2.2.0](#v220)
 		- [v2.1.0](#v210)
 		- [v2.0.0](#v200)
 		- [v1.0.0](#v100)
@@ -93,6 +94,11 @@ data = {
   - A - 引用解析仅限于第一个`[]`，第一个`[]`会返回一个正常的`tuple`/`list`/`dict`/`str`而不是一个`refdict`对象，所以后面的操作无法使用引用特性
 
 ## Change Log
+
+### v2.2.0
+
+- `__contains__`支持链式访问特性
+  - `'player.weapon.attack' in rd`会返回`True`
 
 ### v2.1.0
 

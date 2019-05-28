@@ -98,7 +98,7 @@ class refdict:
 			return keys in self.data
 		keys = keys.split(self.__separator)
 		if len(keys) == 1:
-			return keys in self.data
+			return keys[0] in self.data
 		resultContainer = None
 		try:
 			resultContainer = self['.'.join(keys[:-1])]

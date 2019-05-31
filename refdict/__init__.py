@@ -120,7 +120,10 @@ class refdict:
 		return result
 
 	def __getattr__(self, funcName):
-		return eval('self._refdict__data.' + funcName)
+		if self._refdict__partial:
+			return eval('self._refdict__result.' + funcName)
+		else:
+			return eval('self._refdict__data.' + funcName)
 
 	def __str__(self):
 		return str(self.__data)

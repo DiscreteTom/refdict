@@ -122,10 +122,11 @@ class refdict:
 	def __getattr__(self, funcName):
 		if self._refdict__partial:
 			return eval('self._refdict__result.' + funcName)
-		else:
-			return eval('self._refdict__data.' + funcName)
+		return eval('self._refdict__data.' + funcName)
 
 	def __str__(self):
+		if self._refdict__partial:
+			return str(self._refdict__result)
 		return str(self.__data)
 
 	def __contains__(self, keys):

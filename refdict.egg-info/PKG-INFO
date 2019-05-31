@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: refdict
-Version: 2.2.1
+Version: 3.0.0
 Summary: add reference for dict in python using formatted string
 Home-page: https://github.com/DiscreteTom/refdict
 Author: DiscreteTom
@@ -21,6 +21,7 @@ Description: # refdict
         	- [Warnings](#warnings)
         	- [FAQ](#faq)
         	- [Change Log](#change-log)
+        		- [v3.0.0](#v300)
         		- [v2.2.0](#v220)
         		- [v2.1.0](#v210)
         		- [v2.0.0](#v200)
@@ -99,9 +100,19 @@ Description: # refdict
         - Q - 为什么我用1作为下标访问不到list/tuple/str的第一个元素？
           - A - 和python一样，下标从0开始计数。虽然用起来有时候感觉有些反直觉，但是是合理的
         - Q - 为什么我不能像`refdict[1][2][3]`这样使用引用的特性？
-          - A - 引用解析仅限于第一个`[]`，第一个`[]`会返回一个正常的`tuple`/`list`/`dict`/`str`而不是一个`refdict`对象，所以后面的操作无法使用引用特性
+          - A - 引用解析仅限于第一个`[]`，第一个`[]`会返回一个正常的`tuple`/`list`/`dict`/`str`而不是一个`refdict`对象。可以使用`refdict(1)(2)[3]`这样使用引用特性与链式访问，因为`()`会返回一个临时的子`refdict`对象
         
         ## Change Log
+        
+        ### v3.0.0
+        
+        - 添加静态函数`findItem()`使非refdict对象也可以使用引用与链式访问的功能
+          - `refdict.findItem(data, 'key1.key2')`
+        - 添加多次链式访问的实现方案，使用`()`实现
+          - `rd('player.me')`会返回一个子`refdict`，里面包含父`refdict`的所有数据，但是自身表示了父`refdict`的部分数据。比如`rd('player.me')`包含整个rd的数据，但是它仅表示player
+          - 可以链式使用`()`，且参数可以是链式的，如`rd('player.me')('me.me.me')`
+          - 最后使用`[]`返回非`refdict`的对象完成取值，如`rd('player.me')('me.me')['attack'] = 0`
+        - 为了实现上述“局部结果”的功能，成员变量`data`变为`refdict`的`private`内容，使`refdict`不向前兼容
         
         ### v2.2.0
         

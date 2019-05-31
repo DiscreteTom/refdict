@@ -68,28 +68,29 @@ class refdict:
 		return result
 
 	def __setitem__(self, keys, value):
-		# if keys is a slice or an int (maybe self.__data is str or list or tuple)
+		result = self.__data
+		if self.__partial:
+			result = self.__result
+		# if keys is a slice or an int (maybe result is str or list or tuple)
 		if isinstance(keys, int) or isinstance(keys, slice):
-			self.__data[keys] = value
+			result[keys] = value
 			return
-		# else, keys must be str
+		# else, keys must be a str
 		elif not isinstance(keys, str):
 			raise TypeError('refdict.__setitem__ can just accept int, str or slice as keys')
 
-		result = None
 		keys = keys.split(self.__separator)
-		# idea: self.__data[keys[:-1]][keys[-1]] = value, based on self.__getitem__
-		# first, let result = self.__data[keys[:-1]]
-		if len(keys) == 1:
-			result = self.__data
-		else:
-			result = self[self.__separator.join(keys[:-1])]
+		# idea: self.__result[keys[:-1]][keys[-1]] = value
+		# first, let result = self.__result[keys[:-1]]
+		if len(keys) != 1:
+			result = refdict.findItem(self.__data, self.__separator.join(keys[:-1]), refPrefix = self.__prefix, separator = self.__separator, root = result)
 		# then, result = result[keys[-1]]
-		# if result is a reference string, redirect it to its target
+		# ignore whether the final result is a reference string
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
 			# use `exec` to support slice assignment
 			result = exec('result[' + keys[-1] + '] = value')
 		else:
+			# see result as a dict
 			result[keys[-1]] = value
 	
 	def text(self, keys):

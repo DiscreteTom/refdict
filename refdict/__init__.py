@@ -12,14 +12,17 @@ class refdict:
 		return self
 
 	def __getitem__(self, keys):
-		# if keys is an int or a slice (self.__data is a str or list or tuple)
+		# get raw result
+		result = self.__data
+		if self.__partial:
+			result = self.__result
+		# if keys is an int or a slice (result is a str or list or tuple)
 		if isinstance(keys, int) or isinstance(keys, slice):
-			return self.__data[keys]
+			return result[keys]
 		# else, keys must be a str
 		elif not isinstance(keys, str):
 			raise TypeError('refdict.__getitem__ can just accept str, int or slice as keys')
 		# default result is the whole dict
-		result = self.__data
 		keys = keys.split(self.__separator)
 		while len(keys):
 			# every time pop the first key
@@ -38,6 +41,8 @@ class refdict:
 				keys = result[len(self.__prefix):].split(self.__separator) + keys
 				# result is the top-level object again
 				result = self.__data
+				if self.__partial:
+					result = self.__result
 		return result
 
 	def __setitem__(self, keys, value):

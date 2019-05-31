@@ -130,14 +130,16 @@ class refdict:
 		return str(self.__data)
 
 	def __contains__(self, keys):
+		resultContainer = self._refdict__data
+		if self._refdict__partial:
+			resultContainer = self._refdict__result
 		if not isinstance(keys, str):
-			return keys in self.__data
+			return keys in resultContainer
 		keys = keys.split(self.__separator)
 		if len(keys) == 1:
-			return keys[0] in self.__data
-		resultContainer = None
+			return keys[0] in resultContainer
 		try:
-			resultContainer = self['.'.join(keys[:-1])]
+			resultContainer = self[self._refdict__separator.join(keys[:-1])]
 		except:
 			return False
 		return keys[-1] in resultContainer

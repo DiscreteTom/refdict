@@ -8,6 +8,7 @@ class refdict:
 
 	def load(self, data):
 		self.__data = data
+		self.__partial = False
 		return self
 
 	def __getitem__(self, keys):

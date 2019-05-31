@@ -16,18 +16,43 @@ class refdict:
 		result = self.__data
 		if self.__partial:
 			result = self.__result
+		try:
+			return refdict.findItem(self.__data, keys, refPrefix = self.__prefix, seperator = self.__separator, root = result)
+		except TypeError:
+			raise TypeError('refdict.__getitem__ can just accept str, int or slice as keys')
+
+	@classmethod
+	def findItem(cls, data, keys, **kwargs):
+		'''
+		kwargs:
+		- `refPrefix = '@'`
+		- `separator = '.'`
+		- `root = data`
+		
+		return `root[keys]` using `data` as reference dataset
+		
+		`keys` can be a str of linked keys, or an int, or a slice object
+		'''
+
+		prefix = '@' if 'refPrefix' not in kwargs else kwargs['refPrefix']
+		sep = '.' if 'separator' not in kwargs else kwargs['separator']
+		root = data if 'root' not in kwargs else kwargs['root']
+		result = root
+
 		# if keys is an int or a slice (result is a str or list or tuple)
 		if isinstance(keys, int) or isinstance(keys, slice):
 			return result[keys]
 		# else, keys must be a str
 		elif not isinstance(keys, str):
-			raise TypeError('refdict.__getitem__ can just accept str, int or slice as keys')
-		# default result is the whole dict
-		keys = keys.split(self.__separator)
+			raise TypeError('refdict.findItem can just accept str, int or slice as keys')
+
+		# now keys must be a str, process it to a list
+		keys = keys.split(sep)
+		# calculate result[keys[0]]
 		while len(keys):
 			# every time pop the first key
 			key = keys.pop(0)
-			# get the original result
+			# calculate the raw result, which means result may be a ref str
 			if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
 				# use `eval` to support slice operation
 				result = eval('result[' + key + ']')
@@ -35,14 +60,11 @@ class refdict:
 				# see result as a dict, use key as a string
 				result = result[key]
 			# if result is a reference string, redirect it to its target
-			while isinstance(result, str) and result.startswith(self.__prefix):
+			while isinstance(result, str) and result.startswith(prefix):
 				# add target infront of keys
-				# because target can have many parts divided by self.__separator
-				keys = result[len(self.__prefix):].split(self.__separator) + keys
-				# result is the top-level object again
-				result = self.__data
-				if self.__partial:
-					result = self.__result
+				keys = result[len(prefix):].split(sep) + keys
+				# result is the data
+				result = data
 		return result
 
 	def __setitem__(self, keys, value):

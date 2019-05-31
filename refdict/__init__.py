@@ -95,20 +95,21 @@ class refdict:
 	
 	def text(self, keys):
 		'''
-		get value, if the value the last key is a ref string, return the ref string
+		get value, if the value of the last key is a ref string, return the ref string
 		'''
-		# if keys is a slice or an int (maybe self.__data is a str or list or tuple)
+		result = self.__data
+		if self.__partial:
+			result = self.__result
+		# if keys is a slice or an int (maybe result is a str or list or tuple)
 		if isinstance(keys, int) or isinstance(keys, slice):
-			return self.__data[keys]
+			return result[keys]
 		elif not isinstance(keys, str):
 			raise TypeError('refdict.text can just accept int, str or slice as keys')
 		keys = keys.split(self.__separator)
-		# idea: return self.__data[keys[:-1]][key[-1]], based on self.__getitem__
-		# first, let result = self.__data[keys[:-1]]
-		if len(keys) == 1:
-			result = self.__data
-		else:
-			result = self[self.__separator.join(keys[:-1])]
+		# idea: return result[keys[:-1]][key[-1]]
+		# first, let result = result[keys[:-1]]
+		if len(keys) != 1:
+			result = refdict.findItem(self.__data, self.__separator.join(keys[:-1]), refPrefix = self.__prefix, separator = self.__separator, root = result)
 		# then, result = result[keys[-1]]
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
 			# use `eval` to support slice operation

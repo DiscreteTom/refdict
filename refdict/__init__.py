@@ -169,7 +169,11 @@ class refdict:
 			del result[keys[-1]]
 
 	def __iter__(self):
+		if self._refdict__partial:
+			return iter(self._refdict__result)
 		return iter(self.__data)
 
 	def __repr__(self):
+		if self._refdict__partial:
+			return repr(self._refdict__result)
 		return repr(self.__data)

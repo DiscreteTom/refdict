@@ -3,6 +3,8 @@ class refdict:
 		self.__prefix = refPrefix
 		self.__data = data
 		self.__separator = separator
+		self.__partial = False
+		self.__result = None
 
 	def load(self, data):
 		self.__data = data

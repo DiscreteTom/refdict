@@ -146,19 +146,21 @@ class refdict:
 
 
 	def __delitem__(self, keys):
-		# if keys is an int or a slice (maybe self.__data is a str or list or tuple)
+		result = self.__data
+		if self._refdict__partial:
+			result = self._refdict__result
+		# if keys is an int or a slice (maybe result is a str or list or tuple)
 		if isinstance(keys, int) or isinstance(keys, slice):
-			del self.__data[keys]
+			del result[keys]
 		# or keys must be a str
 		elif not isinstance(keys, str):
 			raise TypeError('refdict.__delitem__ can just accept int, str or slice as keys')
 		keys = keys.split(self.__separator)
-		# idea: del self.__data[keys[:-1]][keys[-1]], based on self.__getitem__
-		# first, let result = self.__data[keys[:-1]]
-		result = self.__data
-		if len(keys) > 1:
-			result = self[self.__separator.join(keys[:-1])]
-		# then, result = result[keys[-1]]
+		# idea: del result[keys[:-1]][keys[-1]]
+		# first, let result = result[keys[:-1]]
+		if len(keys) != 1:
+			result = refdict.findItem(self.__data, self.__separator.join(keys[:-1]), refPrefix = self.__prefix, separator = self.__separator, root = result)
+		# then, del result[keys[-1]]
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):
 			# use `eval` to support slice operation
 			exec('del result[' + keys[-1] + ']')

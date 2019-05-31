@@ -177,3 +177,16 @@ class refdict:
 		if self._refdict__partial:
 			return repr(self._refdict__result)
 		return repr(self.__data)
+
+	def __call__(self, keys):
+		# construct result
+		result = refdict(self.__data, self.__prefix, self.__separator)
+		result.__partial = True
+		if self.__partial:
+			result.__result = self.__result
+		else:
+			result.__result = result.__data
+		# calculate partial result
+		result.__result = refdict.findItem(result._refdict__data, keys, refPrefix = self.__prefix, separator=self.__separator, root=result._refdict__result)
+		return result
+

@@ -6,7 +6,7 @@ class refdict:
 		self.__partial = False
 		self.__result = None
 
-	def load(self, data) -> refdict:
+	def load(self, data):
 		'''
 		load `data` to `self`, return `self`
 		'''

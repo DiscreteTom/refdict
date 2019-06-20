@@ -190,3 +190,11 @@ class refdict:
 		result.__result = refdict.findItem(result._refdict__data, keys, refPrefix = self.__prefix, separator=self.__separator, root=result._refdict__result)
 		return result
 
+	def get(self, keys, default):
+		'''
+		similiar to `dict.get()`
+		'''
+		if keys in self:
+			return self[keys]
+		else:
+			return default

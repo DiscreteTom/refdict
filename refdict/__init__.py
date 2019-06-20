@@ -175,8 +175,8 @@ class refdict:
 
 	def __repr__(self):
 		if self._refdict__partial:
-			return repr(self._refdict__result)
-		return repr(self.__data)
+			return 'refdict(' + repr(self._refdict__result) + ')'
+		return 'refdict(' + repr(self.__data) + ')'
 
 	def __call__(self, keys):
 		# construct result

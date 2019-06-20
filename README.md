@@ -1,5 +1,8 @@
 # refdict
 
+![PyPI](https://img.shields.io/pypi/v/refdict.svg)
+![GitHub](https://img.shields.io/github/license/DiscreteTom/refdict.svg)
+
 在Python使用refdict更好地组织与访问数据
 
 ![](https://raw.githubusercontent.com/DiscreteTom/refdict/master/img/readme.png)
@@ -7,12 +10,13 @@
 兼容dict/list/tuple/str！
 
 - [refdict](#refdict)
-	- [Install](#install)
-	- [Usage](#usage)
-	- [Features](#features)
-	- [Warnings](#warnings)
-	- [FAQ](#faq)
-	- [Change Log](#change-log)
+	- [Install](#Install)
+	- [Usage](#Usage)
+	- [Features](#Features)
+	- [Warnings](#Warnings)
+	- [FAQ](#FAQ)
+	- [Change Log](#Change-Log)
+		- [v3.1.0](#v310)
 		- [v3.0.0](#v300)
 		- [v2.2.0](#v220)
 		- [v2.1.0](#v210)
@@ -95,6 +99,12 @@ data = {
   - A - 引用解析仅限于第一个`[]`，第一个`[]`会返回一个正常的`tuple`/`list`/`dict`/`str`而不是一个`refdict`对象。可以使用`refdict(1)(2)[3]`这样使用引用特性与链式访问，因为`()`会返回一个临时的子`refdict`对象
 
 ## Change Log
+
+### v3.1.0
+
+- 添加函数`refdict.get(keys, default = None)`实现类似于`dict.get(key, default)`的功能，但是`refdict`的`keys`可以是链式的
+- 修复`refdict.__str__()`
+- 修复`refdict.__repr__()`
 
 ### v3.0.0
 

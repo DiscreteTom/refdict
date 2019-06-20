@@ -126,8 +126,8 @@ class refdict:
 
 	def __str__(self):
 		if self._refdict__partial:
-			return str(self._refdict__result)
-		return str(self.__data)
+			return 'refdict(' + str(self._refdict__result) + ')'
+		return 'refdict(' + str(self.__data) + ')'
 
 	def __contains__(self, keys):
 		resultContainer = self._refdict__data
@@ -175,8 +175,8 @@ class refdict:
 
 	def __repr__(self):
 		if self._refdict__partial:
-			return repr(self._refdict__result)
-		return repr(self.__data)
+			return 'refdict(' + repr(self._refdict__result) + ')'
+		return 'refdict(' + repr(self.__data) + ')'
 
 	def __call__(self, keys):
 		# construct result
@@ -190,3 +190,11 @@ class refdict:
 		result.__result = refdict.findItem(result._refdict__data, keys, refPrefix = self.__prefix, separator=self.__separator, root=result._refdict__result)
 		return result
 
+	def get(self, keys, default = None):
+		'''
+		similiar to `dict.get()`
+		'''
+		if keys in self:
+			return self[keys]
+		else:
+			return default

@@ -126,8 +126,8 @@ class refdict:
 
 	def __str__(self):
 		if self._refdict__partial:
-			return str(self._refdict__result)
-		return str(self.__data)
+			return 'refdict(' + str(self._refdict__result) + ')'
+		return 'refdict(' + str(self.__data) + ')'
 
 	def __contains__(self, keys):
 		resultContainer = self._refdict__data

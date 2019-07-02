@@ -83,7 +83,10 @@ class refdict:
 		# idea: self.__result[keys[:-1]][keys[-1]] = value
 		# first, let result = self.__result[keys[:-1]]
 		if len(keys) != 1:
-			result = refdict.findItem(self.__data, self.__separator.join(keys[:-1]), refPrefix = self.__prefix, separator = self.__separator, root = result)
+			try:
+				result = refdict.findItem(self.__data, self.__separator.join(keys[:-1]), refPrefix = self.__prefix, separator = self.__separator, root = result)
+			except KeyError:
+				result = self[self.__separator.join(keys[:-1])] = {}
 		# then, result = result[keys[-1]]
 		# ignore whether the final result is a reference string
 		if isinstance(result, list) or isinstance(result, tuple) or isinstance(result, str):

@@ -16,6 +16,7 @@
 	- [Warnings](#Warnings)
 	- [FAQ](#FAQ)
 	- [Change Log](#Change-Log)
+		- [v3.2.0](#v320)
 		- [v3.1.0](#v310)
 		- [v3.0.0](#v300)
 		- [v2.2.0](#v220)
@@ -99,6 +100,12 @@ data = {
   - A - 引用解析仅限于第一个`[]`，第一个`[]`会返回一个正常的`tuple`/`list`/`dict`/`str`而不是一个`refdict`对象。可以使用`refdict(1)(2)[3]`这样使用引用特性与链式访问，因为`()`会返回一个临时的子`refdict`对象
 
 ## Change Log
+
+### v3.2.0
+
+- 支持链式创建`dict`
+  - 创建空refdict：`rd = refdict({})`
+  - 赋值：`rd['a.b'] = 1`，此时`rd = refdict({'a': {'b': 1}})`
 
 ### v3.1.0
 

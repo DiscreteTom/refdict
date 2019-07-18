@@ -7,6 +7,9 @@ class refdict:
 		self.__result = None
 
 	def load(self, data):
+		'''
+		load `data` to `self`, return `self`
+		'''
 		self.__data = data
 		self.__partial = False
 		return self
@@ -146,7 +149,6 @@ class refdict:
 		except:
 			return False
 		return keys[-1] in resultContainer
-
 
 	def __delitem__(self, keys):
 		result = self.__data

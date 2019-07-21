@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [3.2.1]
+
+### Fixed
+
+Optimize documents.
+
 ## [3.2.0]
 
 ### Added

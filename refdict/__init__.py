@@ -1,28 +1,28 @@
 class refdict:
+	'''
+	`refdict(data, refPrefix='@', separator='.')`
+	'''
 	def __init__(self, data, refPrefix = '@', separator = '.'):
 		self.__prefix = refPrefix
 		self.__data = data
 		self.__separator = separator
-		self.__partial = False
-		self.__result = None
+		self.__resultPath = ''
 
 	def load(self, data):
 		'''
 		load `data` to `self`, return `self`
 		'''
 		self.__data = data
-		self.__partial = False
+		self.__resultPath = ''
 		return self
 
 	def __getitem__(self, keys):
-		# get raw result
+		# get partial result
 		result = self.__data
-		if self.__partial:
-			result = self.__result
-		try:
-			return refdict.findItem(self.__data, keys, refPrefix = self.__prefix, seperator = self.__separator, root = result)
-		except TypeError:
-			raise TypeError('refdict.__getitem__ can just accept str, int or slice as keys')
+		if len(self.__resultPath):
+			result = refdict.findItem(result, self.__resultPath, refPrefix = self.__prefix, separator=self.__separator)
+		# get result
+		return refdict.findItem(self.__data, keys, refPrefix = self.__prefix, seperator = self.__separator, root = result)
 
 	@classmethod
 	def findItem(cls, data, keys, **kwargs):
@@ -64,7 +64,7 @@ class refdict:
 				result = result[key]
 			# if result is a reference string, redirect it to its target
 			while isinstance(result, str) and result.startswith(prefix):
-				# add target infront of keys
+				# add target in front of keys
 				keys = result[len(prefix):].split(sep) + keys
 				# result is the data
 				result = data
@@ -72,8 +72,8 @@ class refdict:
 
 	def __setitem__(self, keys, value):
 		result = self.__data
-		if self.__partial:
-			result = self.__result
+		if len(self.__resultPath):
+			result = refdict.findItem(result, self.__resultPath, refPrefix = self.__prefix, separator=self.__separator)
 		# if keys is a slice or an int (maybe result is str or list or tuple)
 		if isinstance(keys, int) or isinstance(keys, slice):
 			result[keys] = value
@@ -104,8 +104,8 @@ class refdict:
 		get value, if the value of the last key is a ref string, return the ref string
 		'''
 		result = self.__data
-		if self.__partial:
-			result = self.__result
+		if len(self.__resultPath):
+			result = refdict.findItem(result, self.__resultPath, refPrefix = self.__prefix, separator=self.__separator)
 		# if keys is a slice or an int (maybe result is a str or list or tuple)
 		if isinstance(keys, int) or isinstance(keys, slice):
 			return result[keys]
@@ -126,34 +126,36 @@ class refdict:
 		return result
 
 	def __getattr__(self, funcName):
-		if self._refdict__partial:
-			return eval('self._refdict__result.' + funcName)
-		return eval('self._refdict__data.' + funcName)
+		if len(self.__resultPath):
+			result = refdict.findItem(result, self.__resultPath, refPrefix = self.__prefix, separator=self.__separator)
+			return eval('result.' + funcName)
+		return eval('self._refdict__data.' + funcName) # DO NOT change `_refdict__data` to `__data`
 
 	def __str__(self):
-		if self._refdict__partial:
-			return 'refdict(' + str(self._refdict__result) + ')'
-		return 'refdict(' + str(self.__data) + ')'
+		result = 'refdict(' + str(self.__data) + ')'
+		if len(self.__resultPath):
+			result += "('" + self.__resultPath + "')"
+		return result
 
 	def __contains__(self, keys):
-		resultContainer = self._refdict__data
-		if self._refdict__partial:
-			resultContainer = self._refdict__result
+		resultContainer = self.__data
+		if len(self.__resultPath):
+			resultContainer = refdict.findItem(resultContainer, self.__resultPath, refPrefix = self.__prefix, separator=self.__separator)
 		if not isinstance(keys, str):
 			return keys in resultContainer
 		keys = keys.split(self.__separator)
 		if len(keys) == 1:
 			return keys[0] in resultContainer
 		try:
-			resultContainer = self[self._refdict__separator.join(keys[:-1])]
+			resultContainer = self[self.__separator.join(keys[:-1])]
 		except:
 			return False
 		return keys[-1] in resultContainer
 
 	def __delitem__(self, keys):
 		result = self.__data
-		if self._refdict__partial:
-			result = self._refdict__result
+		if len(self.__resultPath):
+			result = refdict.findItem(result, self.__resultPath, refPrefix = self.__prefix, separator=self.__separator)
 		# if keys is an int or a slice (maybe result is a str or list or tuple)
 		if isinstance(keys, int) or isinstance(keys, slice):
 			del result[keys]
@@ -174,30 +176,27 @@ class refdict:
 			del result[keys[-1]]
 
 	def __iter__(self):
-		if self._refdict__partial:
-			return iter(self._refdict__result)
+		if len(self.__resultPath):
+			return iter(refdict.findItem(self.__data, self.__resultPath, refPrefix = self.__prefix, separator=self.__separator))
 		return iter(self.__data)
 
 	def __repr__(self):
-		if self._refdict__partial:
-			return 'refdict(' + repr(self._refdict__result) + ')'
-		return 'refdict(' + repr(self.__data) + ')'
+		result = 'refdict(' + repr(self.__data) + ')'
+		if len(self.__resultPath):
+			result += "('" + self.__resultPath + "')"
+		return result
 
 	def __call__(self, keys):
-		# construct result
 		result = refdict(self.__data, self.__prefix, self.__separator)
-		result.__partial = True
-		if self.__partial:
-			result.__result = self.__result
-		else:
-			result.__result = result.__data
-		# calculate partial result
-		result.__result = refdict.findItem(result._refdict__data, keys, refPrefix = self.__prefix, separator=self.__separator, root=result._refdict__result)
+		result.__resultPath = self.__resultPath
+		if len(result.__resultPath):
+			result.__resultPath += '.'
+		result.__resultPath += str(keys)
 		return result
 
 	def get(self, keys, default = None):
 		'''
-		similiar to `dict.get()`
+		similar to `dict.get()`
 		'''
 		if keys in self:
 			return self[keys]

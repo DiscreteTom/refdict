@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [3.3.0] - 2019-07-27
+
+>Using a string as the keys of the partial result instead of storing the partial result in a variable. In this way the representation of refdict is correct.
+
+### Fixed
+
+- Representation of partial refdict.
+
 ## [3.2.1]
 
 ### Fixed

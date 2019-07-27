@@ -5,7 +5,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name="refdict",
-    version="3.2.1",
+    version="3.3.0",
     author="DiscreteTom",
     author_email="discrete_tom@outlook.com",
     description="Using string as chain keys to realize chain access and reference access of dict in python",

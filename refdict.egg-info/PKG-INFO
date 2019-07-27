@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: refdict
-Version: 3.2.1
+Version: 3.3.0
 Summary: Using string as chain keys to realize chain access and reference access of dict in python
 Home-page: https://github.com/DiscreteTom/refdict
 Author: DiscreteTom
